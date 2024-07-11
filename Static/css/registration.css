@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-image: url('/assets/body-bg.jpg');
+    background-image: url('/assets/img/body-bg.jpg');
     margin: 0;
     padding: 0;
 }
@@ -90,6 +90,7 @@ button:hover {
 }
 
 input:focus, select:focus {
+    outline: none;
     border-color: #007bff;
     border-bottom-width: 2px;
     box-shadow: none;
@@ -97,8 +98,4 @@ input:focus, select:focus {
 
 select {
     padding-left: 30px; /* Add left padding to make room for the icon */
-}
-
-select::-ms-expand {
-    display: none; /* Remove default arrow in IE */
 }
