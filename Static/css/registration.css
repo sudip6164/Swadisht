@@ -1,0 +1,104 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 500px;
+    margin: clamp(20px, 50px, 50px) auto;
+    padding: clamp(15px, 20px, 20px);
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper i {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 14px; /* Match the font size of the input text */
+    pointer-events: none;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 10px 10px 10px 30px; /* Add left padding to make room for the icon */
+    margin-bottom: 5px;
+    box-sizing: border-box; /* It makes the width of input to stay inside container */
+    border: none;
+    border-bottom: 2px solid #ccc;
+    border-radius: 0;
+    font-size: 14px; /* Adjust the font size to match the icon size */
+    background: none;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.termsLabel {
+    display: inline;
+}
+
+.termsofservice {
+    text-decoration: none;
+}
+
+.required {
+    color: red;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+input:focus, select:focus {
+    border-color: #007bff;
+    border-bottom-width: 2px;
+    box-shadow: none;
+}
+
+select {
+    padding-left: 30px; /* Add left padding to make room for the icon */
+}
+
+select::-ms-expand {
+    display: none; /* Remove default arrow in IE */
+}
