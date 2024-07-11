@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container">
-        <form id="registrationForm">
+        <form id="registrationForm" method="" action="">
             <h2>Restaurant Registration</h2>
 
             <div class="form-group">
@@ -82,7 +82,7 @@
             </div>
 
             <div class="form-group">
-                <input type="checkbox" id="terms" name="terms">
+                <input type="checkbox" id="terms" name="terms" oninvalid="this.setCustomValidity('Please accept our terms of service to continue')" oninput="setCustomValidity('')" required>
                 <label for="terms" class="termsLabel"> I agree to the <a href="" class="termsofservice">terms of service</a><span class="required">*</span></label>
             </div>
 
@@ -90,6 +90,6 @@
         </form>
     </div>
 
-    <script src="Static/js/registration.js"></script>
+    <script src="Static/js/registration.js" defer></script>
 </body>
 </html>
