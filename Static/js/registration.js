@@ -1,4 +1,55 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
+    //Steps and previous next buttons
+    var current = 0;
+    var steps = document.querySelectorAll("fieldset");
+    var nextBtns = document.querySelectorAll(".next");
+    var prevBtns = document.querySelectorAll(".previous");
+    var progressBar = document.querySelectorAll("#progressbar li");
+
+    function showStep(index) {
+        steps.forEach(function (step, i) {
+            step.style.display = (i === index) ? "block" : "none";
+        });
+        progressBar.forEach(function (bar, i) {
+            if (i <= index) {
+                bar.classList.add("active");
+            } else {
+                bar.classList.remove("active");
+            }
+        });
+    }
+
+    nextBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            if (validateStep(current)) {
+                current++;
+                showStep(current);
+            }
+        });
+    });
+
+    prevBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            current--;
+            showStep(current);
+        });
+    });
+
+    function validateStep(index) {
+        var valid = true;
+        var inputs = steps[index].querySelectorAll("input[required], select[required]");
+        inputs.forEach(function (input) {
+            if (!input.checkValidity()) {
+                input.reportValidity();
+                valid = false;
+            }
+        });
+        return valid;
+    }
+
+    showStep(current);
+
+    // Leaflet map initialization
     const kathmanduCoords = [27.7172, 85.3240]; // Coordinates for Kathmandu, Nepal
     const map = L.map('map').setView(kathmanduCoords, 13);
     const marker = L.marker(kathmanduCoords, { draggable: true }).addTo(map);
