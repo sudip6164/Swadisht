@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    //Steps and previous next buttons
+    // Steps and previous/next buttons
     var current = 0;
     var steps = document.querySelectorAll("fieldset");
     var nextBtns = document.querySelectorAll(".next");
@@ -76,16 +76,72 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById('address').addEventListener('change', function() {
         const address = this.value;
-        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${address}`)
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${address}&countrycodes=np&addressdetails=1`)
             .then(response => response.json())
             .then(data => {
                 if (data && data.length > 0) {
                     const latlng = [data[0].lat, data[0].lon];
                     map.setView(latlng, 15);
                     marker.setLatLng(latlng);
+                    this.setCustomValidity(''); // Clear the custom validation message
+                } else {
+                    this.setCustomValidity('Please select a place within Nepal.');
+                    this.reportValidity();
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                this.setCustomValidity('Please select a place within Nepal.');
+                this.reportValidity();
+            });
+    });
+
+    // OSM Nominatim autocomplete initialization
+    const addressInput = document.getElementById('address');
+    const suggestions = document.getElementById('suggestions');
+
+    addressInput.addEventListener('input', function() {
+        const query = addressInput.value;
+        if (query.length > 2) {
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&countrycodes=np&addressdetails=1&limit=5`)
+                .then(response => response.json())
+                .then(data => {
+                    suggestions.innerHTML = '';
+                    data.forEach(place => {
+                        const li = document.createElement('li');
+                        li.textContent = place.display_name;
+                        li.addEventListener('click', function() {
+                            addressInput.value = place.display_name;
+                            const latlng = [place.lat, place.lon];
+                            map.setView(latlng, 15);
+                            marker.setLatLng(latlng);
+                            suggestions.innerHTML = '';
+                            addressInput.setCustomValidity(''); // Clear the custom validation message
+                        });
+                        suggestions.appendChild(li);
+                    });
+                    if (data.length === 0) {
+                        addressInput.setCustomValidity('Please select a place within Nepal.');
+                        addressInput.reportValidity();
+                    } else {
+                        addressInput.setCustomValidity(''); // Clear the custom validation message
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    addressInput.setCustomValidity('Please select a place within Nepal.');
+                    addressInput.reportValidity();
+                });
+        } else {
+            suggestions.innerHTML = '';
+        }
+    });
+
+    addressInput.addEventListener('blur', function() {
+        if (suggestions.innerHTML === '') {
+            this.setCustomValidity('Please select a place within Nepal.');
+            this.reportValidity();
+        }
     });
 
     // Handle form submission
