@@ -7,11 +7,12 @@ body {
 
 .container {
     max-width: 500px;
-    margin: clamp(20px, 50px, 50px) auto;
+    margin: 10px auto;
     padding: clamp(15px, 20px, 20px);
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+
 }
 
 h2 {
@@ -83,7 +84,6 @@ input[type="checkbox"] {
 }
 
 .form-navigation button{
-    width: 100%;
     padding: 10px;
     background-color: #007bff;
     border: none;
@@ -97,6 +97,21 @@ input[type="checkbox"] {
     background-color: #0056b3;
 }
 
+.form-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.form-navigation .next{
+    margin-left: auto;
+}
+
+.form-navigation .register{
+    margin:auto;
+    width: 40%;
+}
 
 input:focus, select:focus {
     outline: none;
@@ -107,39 +122,6 @@ input:focus, select:focus {
 
 select {
     padding-left: 30px; /* Add left padding to make room for the icon */
-}
-
-.form-navigation {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.form-navigation .previous{
-    flex: 1;
-    margin-right: 10px;
-    background-color: #007bff;
-    text-align: left;
-    
-}
-
-.form-navigation .next {
-    flex: 1;
-    margin-left: 10px;
-    background-color: #007bff;
-    text-align: right;
-}
-
-.form-navigation .register {
-    flex: 1;
-    margin: 0 auto;
-    background-color: #007bff;
-    text-align: center;
-}
-
-.form-nav-btn {
-    padding: 10px 20px;
-    background-color: #007bff;
 }
 
 #progressbar {

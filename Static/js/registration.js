@@ -17,6 +17,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 bar.classList.remove("active");
             }
         });
+        // Invalidate map size when it becomes visible
+        if (index === 1) { // Assuming the map is in the second fieldset (index 1)
+            setTimeout(function() {
+                map.invalidateSize();
+            }, 100);
+        }
     }
 
     nextBtns.forEach(function (btn) {
