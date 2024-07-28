@@ -87,4 +87,10 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => console.error('Error:', error));
     });
+
+    // Handle form submission
+    document.getElementById('registrationForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent form submission
+        showStep(3); // Show confirmation message
+    });
 });
