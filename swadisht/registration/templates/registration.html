@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Registration Form</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/registration.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+    <div class="container">
+        <form id="registrationForm">
+            <h2>Restaurant Registration</h2>
+
+            <ul id="progressbar">
+                <li class="active">Step 1</li>
+                <li>Step 2</li>
+                <li>Step 3</li>
+            </ul>
+
+            <!-- Step 1 -->
+            <fieldset>
+                <div class="form-group">
+                    <label for="restaurantName">Restaurant Name<span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-utensils"></i>
+                        <input type="text" id="restaurantName" name="restaurantName" placeholder="e.g. Bhanchha Ghar" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ownerName">Owner's Full Name<span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="ownerName" name="ownerName" placeholder="e.g. Saurav Bahadur Magar" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Contact Email<span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" placeholder="e.g. saurav123@gmail.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number<span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="phone" name="phone" placeholder="e.g. 9800000000 or 5550000" required>
+                    </div>
+                </div>
+                <div class="form-navigation">
+                    <button type="button" name="next" class="next action-button" value="Next Step">Next Step</button>
+                </div>
+            </fieldset>
+
+            <!-- Step 2 -->
+            <fieldset>
+                <div class="form-group">
+                    <label for="address">Address<span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <input type="text" id="address" name="address" placeholder="e.g. Kumaripati" required autocomplete="off">
+                        <ul id="suggestions"></ul>
+                    </div>
+                    <div id="map" style="height: 300px; margin-top: 10px;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="cuisine">Cuisine Type<span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-concierge-bell"></i>
+                        <select id="cuisine" name="cuisine" required>
+                            <option value="" disabled selected>Select Cuisine</option>
+                            <option value="Italian">Italian</option>
+                            <option value="Chinese">Chinese</option>
+                            <option value="Indian">Indian</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-navigation">
+                    <button type="button" name="previous" class="previous action-button-previous" value="Previous">Previous</button>
+                    <button type="button" name="next" class="next action-button" value="Next Step">Next Step</button>
+                </div>
+            </fieldset>
+
+            <!-- Step 3 -->
+            <fieldset>
+                <div class="form-group">
+                    <label for="businessLicense">Business License Number (Optional)</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-id-card"></i>
+                        <input type="text" id="businessLicense" name="businessLicense" placeholder="e.g. 123456/078/79" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="panCard">PAN Card Number<span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-id-badge"></i>
+                        <input type="text" id="panCard" name="panCard" placeholder="e.g. 12-345-6789" required autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="terms" name="terms" oninvalid="this.setCustomValidity('Please accept our terms of service to continue')" oninput="setCustomValidity('')" required>
+                    <label for="terms" class="termsLabel"> I agree to the <a href="" class="termsofservice">terms of service</a><span class="required">*</span></label>
+                </div>
+                <div class="form-navigation">
+                    <button type="button" name="previous" class="previous action-button-previous" value="Previous">Previous</button>
+                    <button type="submit" class="register">Register</button>
+                </div>
+            </fieldset>
+            <!-- Confirmation Message -->
+            <fieldset id="confirmationMessage" style="display:none;">
+                <h2>Registration Complete!</h2>
+                <p>Thank you for registering your restaurant. We will get back to you soon.</p>
+            </fieldset>
+        </form>
+    </div>
+
+    <script src="{% static 'js/registration.js' %}" defer></script>
+</body>
+</html>

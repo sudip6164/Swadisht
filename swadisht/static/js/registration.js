@@ -1,0 +1,154 @@
+document.addEventListener("DOMContentLoaded", function () {
+    var current = 0;
+    var steps = document.querySelectorAll("fieldset");
+    var nextBtns = document.querySelectorAll(".next");
+    var prevBtns = document.querySelectorAll(".previous");
+    var progressBar = document.querySelectorAll("#progressbar li");
+
+    function showStep(index) {
+        steps.forEach(function (step, i) {
+            step.style.display = (i === index) ? "block" : "none";
+        });
+        progressBar.forEach(function (bar, i) {
+            if (i <= index) {
+                bar.classList.add("active");
+            } else {
+                bar.classList.remove("active");
+            }
+        });
+        if (index === 1) {
+            setTimeout(function() {
+                map.invalidateSize();
+            }, 100);
+        }
+    }
+
+    nextBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            if (validateStep(current)) {
+                current++;
+                showStep(current);
+            }
+        });
+    });
+
+    prevBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            current--;
+            showStep(current);
+        });
+    });
+
+    function validateStep(index) {
+        var valid = true;
+        var inputs = steps[index].querySelectorAll("input[required], select[required]");
+        inputs.forEach(function (input) {
+            if (!input.checkValidity()) {
+                valid = false;
+            }
+        });
+        if (!valid) {
+            steps[index].querySelector("input:invalid, select:invalid").reportValidity();
+        }
+        return valid;
+    }
+
+    showStep(current);
+
+    const kathmanduCoords = [27.7172, 85.3240];
+    const map = L.map('map').setView(kathmanduCoords, 13);
+    const marker = L.marker(kathmanduCoords, { draggable: true }).addTo(map);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    marker.on('dragend', function() {
+        const latlng = marker.getLatLng();
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('address').value = data.display_name;
+                document.getElementById('address').setCustomValidity('');
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    const addressInput = document.getElementById('address');
+    const suggestions = document.getElementById('suggestions');
+
+    function fetchAddressSuggestions(query) {
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&countrycodes=np&addressdetails=1&limit=5`)
+            .then(response => response.json())
+            .then(data => {
+                suggestions.innerHTML = '';
+                if (data.length > 0) {
+                    data.forEach(place => {
+                        const li = document.createElement('li');
+                        li.textContent = place.display_name;
+                        li.addEventListener('click', function() {
+                            addressInput.value = place.display_name;
+                            const latlng = [place.lat, place.lon];
+                            map.setView(latlng, 15);
+                            marker.setLatLng(latlng);
+                            suggestions.innerHTML = '';
+                            addressInput.setCustomValidity('');
+                        });
+                        suggestions.appendChild(li);
+                    });
+                } else {
+                    addressInput.setCustomValidity('');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    addressInput.addEventListener('input', function() {
+        const query = addressInput.value;
+        if (query.length > 2) {
+            fetchAddressSuggestions(query);
+        } else {
+            suggestions.innerHTML = '';
+            addressInput.setCustomValidity('');
+        }
+    });
+
+    addressInput.addEventListener('blur', function() {
+        if (!this.value) {
+            this.setCustomValidity('Please fill out this field.');
+            this.reportValidity();
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+
+    addressInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const address = this.value;
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${address}&countrycodes=np&addressdetails=1`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        const latlng = [data[0].lat, data[0].lon];
+                        map.setView(latlng, 15);
+                        marker.setLatLng(latlng);
+                        this.setCustomValidity('');
+                    } else {
+                        this.setCustomValidity('Please select a place within Nepal.');
+                        this.reportValidity();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    this.setCustomValidity('Please select a place within Nepal.');
+                    this.reportValidity();
+                });
+        }
+    });
+
+    document.getElementById('registrationForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        showStep(3);
+    });
+});
