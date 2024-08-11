@@ -12,7 +12,8 @@
 </head>
 <body>
     <div class="container">
-        <form id="registrationForm">
+        <form id="registrationForm" action="" method="post"> 
+            {% csrf_token %}
             <h2>Restaurant Registration</h2>
 
             <ul id="progressbar">
@@ -116,6 +117,7 @@
                 <p>Thank you for registering your restaurant. We will get back to you soon.</p>
             </fieldset>
         </form>
+
     </div>
 
     <script src="{% static 'js/registration.js' %}" defer></script>
