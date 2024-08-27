@@ -70,6 +70,12 @@ h2 {
 .restaurant-card .location {
     font-size: 14px;
     color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+.restaurant-card .cuisine {
+    font-size: 14px;
+    color: var(--secondary-color);
     margin-bottom: 15px;
 }
 
