@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import registrationFPage
-from .forms import registrationForm
 
 
 
@@ -26,9 +25,17 @@ def register(request):
         panCard = request.POST['panCard']
 
         newRestaurant = registrationFPage(restaurantName=restaurant, ownerName=owner, email=email, phone=phone, address= address, cuisineType=cuisine, businessLicence= business, panCard=panCard)
-        newRestaurant.save()
+        if newRestaurant.is_valis():
+            newRestaurant.save()
+            return redirect('restaurantListing')
 
     return render(request, 'registration.html')
+
+def listing(request):
+    restaurantDetails = registrationFPage.objects.all
+    context = {'restaurant':restaurantDetails}
+    return render(request, 'listings.html', context)
+
 
 
 
