@@ -146,9 +146,4 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         }
     });
-
-    document.getElementById('registrationForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        showStep(3);
-    });
 });
